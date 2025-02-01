@@ -22,6 +22,15 @@ type GameDataType = {
   playerTwoTotalWins: number;
 };
 
+type Payload = {
+  playerOne: string;
+  playerTwo: string;
+  totalPlayedGames: number;
+  playerOneTotalWins: number;
+  playerTwoTotalWins: number;
+  games: Games[];
+};
+
 export default function Game() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,6 +65,8 @@ export default function Game() {
     playerOne: 0,
     playerTwo: 0,
   });
+
+  const [posting, setPosting] = useState(false);
 
   const winner = checkWinner(board);
 
@@ -134,6 +145,33 @@ export default function Game() {
     }
   }, [winner, board]);
 
+  const handlePost = async () => {
+    try {
+      setPosting(true);
+      const payload: Payload = {
+        playerOne: playerOne!,
+        playerTwo: playerTwo!,
+        playerOneTotalWins: gameData?.playerOneTotalWins || 0,
+        playerTwoTotalWins: gameData?.playerTwoTotalWins || 0,
+        totalPlayedGames: gameData?.totalPlayedGames || 0,
+        games: games,
+      };
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/history`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      router.push('/');
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setPosting(false);
+    }
+  };
+
   console.log({ games, gameData });
 
   return (
@@ -188,7 +226,11 @@ export default function Game() {
             >
               Continue
             </Button>
-            <Button variant="destructive" onClick={() => router.push('/')}>
+            <Button
+              variant="destructive"
+              onClick={handlePost}
+              loading={posting}
+            >
               Stop
             </Button>
           </div>

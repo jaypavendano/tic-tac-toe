@@ -1,210 +1,37 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
+import dayjs from 'dayjs';
 
-type Games = {
-  status: string; // ex. 'Winnwer: PlayerName' or 'Draw'
+type Game = {
+  _id: string;
+  status: string;
   board: string[];
 };
 
-type History = {
-  date: string;
+type HistoryEntry = {
+  _id: string;
   playerOne: string;
   playerTwo: string;
   totalPlayedGames: number;
   playerOneTotalWins: number;
   playerTwoTotalWins: number;
-  games: Games[];
+  games: Game[];
+  createdAt: string;
 };
 
-const ticTacToeHistories: History[] = [
-  {
-    date: '2024-11-13',
-    playerOne: 'Alice',
-    playerTwo: 'Bob',
-    totalPlayedGames: 3,
-    playerOneTotalWins: 2,
-    playerTwoTotalWins: 1,
-    games: [
-      {
-        status: 'Winner: Alice',
-        board: ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'X'],
-      },
-      {
-        status: 'Winner: Bob',
-        board: ['X', 'O', 'X', 'X', 'O', 'O', 'O', 'X', 'O'],
-      },
-      {
-        status: 'Winner: Alice',
-        board: ['O', 'X', 'O', 'X', 'O', 'X', 'X', 'O', 'X'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-12',
-    playerOne: 'Charlie',
-    playerTwo: 'David',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 0,
-    games: [
-      {
-        status: 'Draw',
-        board: ['O', 'X', 'O', 'X', 'O', 'X', 'X', 'O', 'X'],
-      },
-      {
-        status: 'Winner: Charlie',
-        board: ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-11',
-    playerOne: 'Eve',
-    playerTwo: 'Frank',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 1,
-    games: [
-      {
-        status: 'Winner: Eve',
-        board: ['X', 'X', 'O', 'O', 'X', 'X', 'X', 'O', 'O'],
-      },
-      {
-        status: 'Winner: Frank',
-        board: ['O', 'O', 'X', 'X', 'O', 'O', 'X', 'X', 'X'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-10',
-    playerOne: 'Grace',
-    playerTwo: 'Henry',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 0,
-    playerTwoTotalWins: 1,
-    games: [
-      {
-        status: 'Draw',
-        board: ['X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O'],
-      },
-      {
-        status: 'Winner: Henry',
-        board: ['O', 'X', 'O', 'X', 'X', 'O', 'O', 'X', 'X'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-09',
-    playerOne: 'Ivy',
-    playerTwo: 'Jack',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 1,
-    games: [
-      {
-        status: 'Winner: Ivy',
-        board: ['X', 'X', 'X', 'O', 'O', 'X', 'O', 'X', 'O'],
-      },
-      {
-        status: 'Winner: Jack',
-        board: ['O', 'O', 'X', 'X', 'X', 'O', 'O', 'X', 'X'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-08',
-    playerOne: 'Kevin',
-    playerTwo: 'Lily',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 0,
-    games: [
-      {
-        status: 'Winner: Kevin',
-        board: ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'],
-      },
-      {
-        status: 'Draw',
-        board: ['O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-07',
-    playerOne: 'Mason',
-    playerTwo: 'Nina',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 0,
-    games: [
-      {
-        status: 'Winner: Mason',
-        board: ['O', 'O', 'X', 'X', 'X', 'O', 'O', 'X', 'X'],
-      },
-      {
-        status: 'Draw',
-        board: ['X', 'X', 'O', 'O', 'O', 'X', 'X', 'X', 'O'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-06',
-    playerOne: 'Oliver',
-    playerTwo: 'Paige',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 0,
-    playerTwoTotalWins: 1,
-    games: [
-      {
-        status: 'Draw',
-        board: ['X', 'X', 'O', 'O', 'O', 'X', 'X', 'O', 'X'],
-      },
-      {
-        status: 'Winner: Paige',
-        board: ['O', 'X', 'O', 'X', 'O', 'X', 'X', 'O', 'O'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-05',
-    playerOne: 'Quinn',
-    playerTwo: 'Ryan',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 1,
-    games: [
-      {
-        status: 'Winner: Quinn',
-        board: ['X', 'O', 'X', 'O', 'X', 'X', 'O', 'O', 'X'],
-      },
-      {
-        status: 'Winner: Ryan',
-        board: ['O', 'X', 'O', 'X', 'X', 'O', 'X', 'O', 'X'],
-      },
-    ],
-  },
-  {
-    date: '2024-11-04',
-    playerOne: 'Sophia',
-    playerTwo: 'Tyler',
-    totalPlayedGames: 2,
-    playerOneTotalWins: 1,
-    playerTwoTotalWins: 0,
-    games: [
-      {
-        status: 'Winner: Sophia',
-        board: ['O', 'X', 'O', 'X', 'O', 'X', 'X', 'O', 'X'],
-      },
-      {
-        status: 'Draw',
-        board: ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'O'],
-      },
-    ],
-  },
-];
+type GameHistory = {
+  history: HistoryEntry[];
+};
 
-export default function Home() {
+const getHistory = async (): Promise<GameHistory> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/get-history`);
+  if (!res.ok) throw new Error('Failed to fetch data');
+  return await res.json();
+};
+export default async function Home() {
+  const histories = (await getHistory()).history;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="grid md:grid-cols-2 gap-10 md:gap-5 items-center">
@@ -221,14 +48,14 @@ export default function Home() {
 
           <ScrollArea className="h-[300px] w-full py-2">
             <div className="space-y-3 px-6">
-              {ticTacToeHistories.map((result, index) => (
+              {histories.map((result) => (
                 <div
-                  key={index}
+                  key={result._id}
                   className="pb-3 border-1 border-b border-gray-300 last:border-b-0"
                 >
                   <div className="sticky top-0 bg-white p-1 mb-1">
                     <p>
-                      {result.date}:{' '}
+                      {dayjs(result.createdAt).format('MMMM D, YYYY h:mm A')}:{' '}
                       <span className="font-medium">
                         {result.playerOne} vs {result.playerTwo}
                       </span>
@@ -244,6 +71,7 @@ export default function Home() {
                               variant="outline"
                               key={i}
                               className="w-10 font-bold aspect-square cursor-default"
+                              disabled={cell === null}
                             >
                               {cell}
                             </Button>
