@@ -1,5 +1,5 @@
 import DBConnection from '@/lib/db-connection';
-import History from '@/models/History';
+import History from '@/models/history';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
