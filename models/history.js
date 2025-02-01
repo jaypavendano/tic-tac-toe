@@ -19,5 +19,7 @@ const HistorySchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.models.History ||
-  mongoose.model('History', HistorySchema);
+const History =
+  mongoose.models.History || mongoose.model('History', HistorySchema);
+
+export default History;
