@@ -144,7 +144,7 @@ export default function Game() {
       });
       setIsDialogOpen(true);
     }
-  }, [winner, board, winnings, gameTotal, status]);
+  }, [winner, board]);
 
   const handlePost = async () => {
     try {
@@ -172,8 +172,6 @@ export default function Game() {
       setPosting(false);
     }
   };
-
-  console.log({ games, gameData });
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
