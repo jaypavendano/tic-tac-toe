@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,10 +9,17 @@ import { Label } from '@/components/ui/label';
 export default function PlayerNames() {
   const [player1, setPlayer1] = useState('');
   const [player2, setPlayer2] = useState('');
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // go to the main game
+    if (player1 && player2) {
+      router.push(
+        `/game?player1=${encodeURIComponent(
+          player1
+        )}&player2=${encodeURIComponent(player2)}`
+      );
+    }
   };
 
   return (
