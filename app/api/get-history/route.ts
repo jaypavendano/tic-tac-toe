@@ -6,7 +6,7 @@ export async function GET() {
   try {
     await DBConnection();
 
-    const history = await History.find().sort({ createdAt: -1 });
+    const history = await History.find().sort({ createdAt: -1 }).lean();
 
     return NextResponse.json({ history }, { status: 200 });
   } catch (err) {
