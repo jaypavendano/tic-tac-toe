@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import Link from 'next/link';
 
 type Games = {
   status: string; // ex. 'Winnwer: PlayerName' or 'Draw'
@@ -207,11 +208,13 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="grid md:grid-cols-2 gap-10 md:gap-5 items-center">
-        <div className=" grid items-center justify-center">
+        <div className=" grid items-center justify-items-center">
           <h1 className="uppercase font-serif text-4xl text-center font-bold mb-8">
             Tic Tac Toe
           </h1>
-          <Button size="lg">Start Game</Button>
+          <Link href="/players">
+            <Button size="lg">Start Game</Button>
+          </Link>
         </div>
         <div className="border rounded-lg  font-mono w-[400px]">
           <h2 className="text-xl mb-4 p-6 pb-0">HISTORY</h2>
