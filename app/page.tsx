@@ -26,9 +26,7 @@ type GameHistory = {
 
 const getHistory = async (): Promise<GameHistory> => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/get-history`
-    );
+    const res = await fetch(`/api/get-history`);
     if (!res.ok) throw new Error('Failed to fetch data');
     return await res.json();
   } catch (error) {
